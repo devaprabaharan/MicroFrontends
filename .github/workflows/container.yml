@@ -22,7 +22,7 @@ jobs:
         run: ls -la MarketingApp
 
       - run: npm install
-        working-directory: 'Microfrontends/MarketingApp/container'
+        working-directory: 'MarketingApp/Container'
       
       - run: npm run build
 
