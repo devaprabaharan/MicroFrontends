@@ -7,6 +7,10 @@ on:
     paths:
       - '**'
 
+defaults:
+  run:
+    working-directory: MarketingApp/Container
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,8 +26,6 @@ jobs:
         run: ls -la MarketingApp
 
       - run: npm install
-        working-directory: 'MarketingApp/Container'
-      
       - run: npm run build
 
       - uses: shinyinc/action-aws-cli@v1.2
