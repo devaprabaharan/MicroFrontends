@@ -17,6 +17,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: List directory structure
+        run: ls -la
       - run: npm install
       - run: npm run build
 
