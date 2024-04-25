@@ -17,14 +17,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      # List contents of the root directory
-      - name: List contents of the root
-        run: ls -la
-
+      
       # If you suspect the directory should be under a sub-folder, list that as well
       - name: List contents of the suspected directory
         run: ls -la MarketingApp/container
-        
+
       - run: npm install
       - run: npm run build
 
