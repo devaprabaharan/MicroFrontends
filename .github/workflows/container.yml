@@ -30,4 +30,4 @@ jobs:
       - name: Execute AWS CLI Command
         run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/Container/latest
 
-      - run: aws cloudfron create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/Container/lastest/index.html"
+      - run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/Container/lastest/index.html"
