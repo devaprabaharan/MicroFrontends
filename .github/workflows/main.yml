@@ -1,0 +1,32 @@
+name: deploy-container2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '*'
+
+defaults:
+  run:
+    working-directory: MarketingApp/container
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - run: npm run build
+
+      - uses: shinyinc/action-aws-cli@v1.2
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: 'us-east-2'
+
+      - name: Execute AWS CLI Command
+        run: aws s3 sync dist s3://$AWS_S3_BUCKET_NAME/container/latest
+        env:
+          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
