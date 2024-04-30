@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import { createMemoryHistory, createBrowserHistory } from 'history';
 import App from './App';
 
-const mount =(el, {onNavigate, defaultHistory, initialPath})=>{
+const mount =(el, {onSignIn, onNavigate, defaultHistory, initialPath})=>{
+    //memory history always defaults to '/' first time
+    //give memoryhistory an intialState
     const history = defaultHistory || createMemoryHistory({
-        initialEntries:[initialPath]
+        initialEntries: [initialPath]
     });
 
     if(onNavigate){
@@ -13,7 +15,7 @@ const mount =(el, {onNavigate, defaultHistory, initialPath})=>{
         // callback function from Container
         history.listen(onNavigate);
     }
-   ReactDOM.render(<App history={history}/>, el);
+   ReactDOM.render(<App onSignIn={onSignIn} history={history}/>, el);
    
    //mount function returns this object for container function can call and change marketing app
    return{
@@ -30,7 +32,7 @@ const mount =(el, {onNavigate, defaultHistory, initialPath})=>{
 }
 
 if(process.env.NODE_ENV === 'development'){
-    let el = document.querySelector('#_markerting-dev-root');
+    let el = document.querySelector('#_auth-dev-root');
     //assuming our container doesnt have an element with an id '_markerting-dev-root'
     if(el){
         //we are running this app in isolation, so use browser history instead of Memory history

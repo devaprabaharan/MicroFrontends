@@ -1,8 +1,8 @@
 import React, {useRef, useEffect} from 'react';
-import {mount} from 'marketing/MarketingApp';
+import {mount} from 'auth/AuthApp';
 import { useHistory } from 'react-router-dom';
 
-export default () => {
+export default ({ onSignIn }) => {
     const ref = useRef(null);
     const history = useHistory();
 
@@ -17,9 +17,10 @@ export default () => {
                 if(currentPathname !== nextPathname){//to prevent infinite flow that each history object tell other it changed
                     //tell the history about the new path
                     history.push(nextPathname);
-                    console.log(`the container noticed navigation inmarketing: ${nextPathname}`);
+                    console.log(`the container noticed navigation in auth: ${nextPathname}`);
                 }
-            }
+            },
+            onSignIn //onSignIn: () => {onSignIn(); }
         });
         //anytime navigation occurs in container, call onParentNavigate
         history.listen(onParentNavigate);
