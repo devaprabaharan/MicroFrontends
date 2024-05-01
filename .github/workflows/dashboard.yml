@@ -3,9 +3,9 @@ name: deploy-dashboard
 on:
   push:
     branches:
-      - 'develop'
+      - '*'
     paths:
-      - 'MarketingApp/dashboard/**'
+        - '**'
 
 defaults:
   run:
