@@ -3,13 +3,13 @@ name: deploy-dashboard
 on:
   push:
     branches:
-      - '*'
+      - 'develop'
     paths:
-      - '**'
+      - 'MarketingApp/dashboard/**'
 
 defaults:
   run:
-    working-directory: DashboardApp/dashboard
+    working-directory: MarketingApp/dashboard
 
 jobs:
   build:
