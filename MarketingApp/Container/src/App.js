@@ -1,12 +1,13 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
-import Header from "./components/Header";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { StylesProvider, createGenerateClassName } from "@material-ui/core";
-import Progress from "./components/Progress";
 import { createBrowserHistory } from "history";
-const AuthLazy = lazy(() => import("./components/AuthApp"));
-const MarketingLazy = lazy(() => import("./components/MarketingApp"));
-const DashboardLazy = lazy(() => import("./components/DashboardApp"));
+import Header from './Components/Header';
+import Progress from './Components/Progress';
+
+const AuthLazy = lazy(() => import('./Components/AuthApp'));
+const MarketingLazy = lazy(() => import('./Components/MarketingApp'));
+const DashboardLazy = lazy(() => import('./Components/DashboardApp'));
 
 //unique randomly generated namespace so that css classnames will not collide with mfe's
 const generateClassName = createGenerateClassName({
@@ -32,20 +33,12 @@ export default () => {
     <Router history={history}>
       <StylesProvider generateClassName={generateClassName}>
         <div>
-          <Header
-            isSignedIn={isSignedIn}
-            onSignOut={() => setIsSignedIn(false)}
-          />
+          <Header isSignedIn={isSignedIn} onSignOut={() => setIsSignedIn(false)} />
           <Suspense fallback={<Progress />}>
             <Switch>
               {/* /auth route */}
-              <Route path="/auth">
-                <AuthLazy onSignIn={() => setIsSignedIn(true)} />
-              </Route>
-              <Route path="/dashboard" >
-                {!isSignedIn && <Redirect to="/" />}
-                <DashboardLazy/>
-                </Route>
+              <Route path="/auth"><AuthLazy onSignIn={() => setIsSignedIn(true)} /></Route>
+              <Route path="/dashboard">{!isSignedIn && <Redirect to="/" />}<DashboardLazy /></Route>
               {/* rest of the route */}
               <Route path="/" component={MarketingLazy} />
             </Switch>
