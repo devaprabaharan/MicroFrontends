@@ -16,6 +16,9 @@ const prodConfig = {
             exposes:{
                 './AuthApp': './src/bootstrap'                  // different for different apps
             },
+            remotes: {
+                //store: 'store@http://localhost:8084/remoteEntry.js'
+            },
             shared: packageJson.dependencies
         })
     ]

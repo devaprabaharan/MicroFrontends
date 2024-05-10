@@ -7,13 +7,15 @@ export default () => {
     const history = useHistory();
 
     useEffect(()=>{
-        
+        console.log(`inside container MarketingApp.js history.location: ${JSON.stringify(history.location)}`);
         const { onParentNavigate } = mount(ref.current, {
             initialPath: history.location.pathname, //send the initial state of the route to the subapp memory history
             // update the browser history objects pathname to the new path marketing sub app navigated to.
             //we can rename the property of the location object you are destructuring and rename it to nextPathname
-            onNavigate:({pathname:nextPathname})=>{
-                const currentPathname = history.location;
+            onNavigate:(location)=>{
+                console.log(`location: ${location}`);
+                const nextPathname = location.pathname;
+                const currentPathname = history.location.pathname;
                 if(currentPathname !== nextPathname){//to prevent infinite flow that each history object tell other it changed
                     //tell the history about the new path
                     history.push(nextPathname);

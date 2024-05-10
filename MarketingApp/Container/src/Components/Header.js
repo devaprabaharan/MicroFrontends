@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link as RouterLink } from 'react-router-dom';
+//import {  useStore } from 'store/StoreApp';
 
 const useStyles = makeStyles((theme) => ({
   '@global': {
@@ -56,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header({ isSignedIn, onSignOut }) {
   const classes = useStyles();
-
+  //const {count, increment} = useStore();
   const onClick = () => {
     if (isSignedIn && onSignOut) {
       onSignOut();
@@ -81,6 +82,15 @@ export default function Header({ isSignedIn, onSignOut }) {
           >
             App
           </Typography>
+          <Button
+            color="primary"
+            variant="outlined"
+            className={classes.link}
+            
+          >
+            {'Add count' }
+          </Button>
+          <Typography>({0})</Typography>
           <Button
             color="primary"
             variant="outlined"

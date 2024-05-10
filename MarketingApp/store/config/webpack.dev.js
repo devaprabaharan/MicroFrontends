@@ -7,27 +7,21 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 const devConfig = {
     mode: 'development',
     output:{
-        publicPath:'http://localhost:8082/'
+        publicPath:'http://localhost:8084/'
     },
     devServer:{
-        port:8082,                              // different for different apps
+        port:8084,
         historyApiFallback:{
             index: '/index.html'
         },
         headers: {'Access-Control-Allow-Origin': '*'}
     },
     plugins: [
-        //if publicpath is never set, scripts are loaded up from the remoteEntry.js file
-        //relative to the Domain URL that we loaded remoteEntry.js from
-        // sub app will load up the main.js file by going to (where we got remoteentry.js)/main.js
         new ModuleFederationPlugin({
-            name:'auth',                        // different for different apps
+            name:'store',
             filename: 'remoteEntry.js',
             exposes:{
-                './AuthApp':'./src/bootstrap'   // different for different apps
-            },
-            remotes:{
-                //store: 'store@http://localhost:8084/remoteEntry.js'
+                './StoreApp':'./src/store'
             },
             shared:packageJson.dependencies
         }),

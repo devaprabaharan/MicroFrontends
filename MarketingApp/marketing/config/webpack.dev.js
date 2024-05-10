@@ -13,7 +13,8 @@ const devConfig = {
         port:8081,
         historyApiFallback:{
             index: '/index.html'
-        }
+        },
+        headers: {'Access-Control-Allow-Origin': '*'}
     },
     plugins: [
         new ModuleFederationPlugin({
@@ -21,6 +22,9 @@ const devConfig = {
             filename: 'remoteEntry.js',
             exposes:{
                 './MarketingApp':'./src/bootstrap'
+            },
+            remotes: {
+               // store: 'store@http://localhost:8084/remoteEntry.js'
             },
             shared:packageJson.dependencies
         }),
