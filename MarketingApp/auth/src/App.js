@@ -1,24 +1,40 @@
 import React from "react";
-import {Switch, Route, Router} from 'react-router-dom';
-import { StylesProvider, createGenerateClassName } from "@material-ui/core/styles";
+import { MemoryRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Signin from './components/Signin';
 import SignUp from "./components/Signup";
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 
-const generateClassName = createGenerateClassName({
-    productionPrefix : 'au'                                 // different for different apps
+const theme = createTheme({
+  // Customize your theme here
 });
 
-export default ({ history, onSignIn }) => {
+const muiCache = createCache({
+    key: 'au',
+    prepend: true,
+});
+
+// Updated: Added `history` prop for Router
+export default function AuthApp({ onSignIn, history }) {
+    const handleSignIn = () => {
+        console.log(`auth: appjs: inside authapp handle signin`)
+        onSignIn();
+    };
+
     return (
         <div>
-            <StylesProvider generateClassName={generateClassName}> 
+            <ThemeProvider theme={theme}>
+            <CacheProvider value={muiCache}>
                 <Router history={history}>
-                    <Switch>
-                        <Route path="/auth/signin" ><Signin  onSignIn={onSignIn}/></Route>
-                        <Route path="/auth/signup" ><SignUp onSignIn={onSignIn}/></Route>
-                    </Switch>
+                    <Routes>
+                        <Route path="/auth/signin" element={<Signin onSignIn={onSignIn}/>} />
+                        <Route path="/auth/signup" element={<SignUp onSignIn={onSignIn}/>} />
+                        <Route path="/" element={<Navigate replace to="/auth/signin" />} /> 
+                    </Routes>
                 </Router>
-            </StylesProvider>
+            </CacheProvider>
+            </ThemeProvider>
         </div>
-    )
+    );
 }

@@ -1,28 +1,40 @@
-import React, {useRef, useEffect} from 'react';
-import {mount} from 'marketing/MarketingApp';
-import { useHistory } from 'react-router-dom';
+import React, { useRef, useEffect } from 'react';
+import { mount } from 'marketing/MarketingApp';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-export default () => {
+export default function MarketingApp({ onSignIn }) {
     const ref = useRef(null);
-    const history = useHistory();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const navigationInitiatedByMicrofrontend = useRef(false);
 
-    useEffect(()=>{
-        
+    useEffect(() => {
         const { onParentNavigate } = mount(ref.current, {
-            initialPath: history.location.pathname, //send the initial state of the route to the subapp memory history
-            // update the browser history objects pathname to the new path marketing sub app navigated to.
-            //we can rename the property of the location object you are destructuring and rename it to nextPathname
-            onNavigate:({pathname:nextPathname})=>{
-                const currentPathname = history.location;
-                if(currentPathname !== nextPathname){//to prevent infinite flow that each history object tell other it changed
-                    //tell the history about the new path
-                    history.push(nextPathname);
-                    console.log(`the container noticed navigation inmarketing: ${nextPathname}`);
+            initialPath: location.pathname, // Send the initial state of the route to the subapp memory history
+
+            onNavigate: ({ pathname: nextPathname }) => {
+                if (location.pathname !== nextPathname) {
+                    navigationInitiatedByMicrofrontend.current = true;
+                    navigate(nextPathname, { replace: true });
                 }
-            }
+            },
+            onSignIn,
         });
-        //anytime navigation occurs in container, call onParentNavigate
-        history.listen(onParentNavigate);
-    }, []);// empty array to limit calling the useEffect is called only once when MarketinApp is rendered.
-    return <div ref={ref} />
+
+        // React only to changes in location
+        if (navigationInitiatedByMicrofrontend.current) {
+            // Reset the flag after handling navigation internally
+            navigationInitiatedByMicrofrontend.current = false;
+        } else {
+            // Sync the microfrontend with the container's location
+            console.log(`container: MarketingApp - before sending the navigation of container to marketing:${location.pathname}`)
+            onParentNavigate({ pathname: location.pathname });
+        }
+
+        return () => {
+            // Cleanup logic if necessary when the component unmounts
+        };
+    }, [navigate, location, onSignIn]);
+
+    return <div ref={ref} />;
 }

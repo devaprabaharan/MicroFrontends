@@ -13,14 +13,15 @@ const devConfig = {
         port:8084,
         historyApiFallback:{
             index: '/index.html'
-        }
+        },
+        headers: {'Access-Control-Allow-Origin': '*'}
     },
     plugins: [
         new ModuleFederationPlugin({
             name:'store',
             filename: 'remoteEntry.js',
             exposes:{
-                './StoreApp':'./src/bootstrap'
+                './StoreApp':'./src/store'
             },
             shared:packageJson.dependencies
         }),

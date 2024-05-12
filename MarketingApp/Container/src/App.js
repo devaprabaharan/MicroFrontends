@@ -1,50 +1,68 @@
-import React, { lazy, Suspense, useState, useEffect } from "react";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
-import { StylesProvider, createGenerateClassName } from "@material-ui/core";
-import { createBrowserHistory } from "history";
-import Header from './Components/Header';
-import Progress from './Components/Progress';
+import React, { lazy, Suspense, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  useLocation
+} from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "@mui/material";
+import Header from "./Components/Header";
+import Progress from "./Components/Progress";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 
-const AuthLazy = lazy(() => import('./Components/AuthApp'));
-const MarketingLazy = lazy(() => import('./Components/MarketingApp'));
-const DashboardLazy = lazy(() => import('./Components/DashboardApp'));
+const AuthLazy = lazy(() => import("./Components/AuthApp"));
+const MarketingLazy = lazy(() => import("./Components/MarketingApp"));
+const DashboardLazy = lazy(() => import("./Components/DashboardApp"));
 
-//unique randomly generated namespace so that css classnames will not collide with mfe's
-const generateClassName = createGenerateClassName({
-  productionPrefix: "co",
-});
+const theme = createTheme();
+const muiCache = createCache({ key: "co", prepend: true });
 
-const history = createBrowserHistory();
-
-export default () => {
+function SignInOutController() {
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const navigate = useNavigate(); // Correctly placed within the Router context
 
-  //
-  useEffect(() => {
-    if (isSignedIn) {
-      history.push("/dashboard");
-    }
-  }, [isSignedIn]);
+  const handleSignIn = () => {
+    console.log("Signing in");
+    setIsSignedIn(true);
+    navigate("/dashboard", { replace: true });
+  };
+
+  const handleSignOut = () => {
+    console.log("Signing out");
+    setIsSignedIn(false);
+    navigate("/", { replace: true });
+  };
 
   return (
-    // why not browser router. whenever we create a browser router that internally creates a browser history for us
-    // we have to have access to that history instance so that we can programmatically redirect the user around the app.
-    // ex when the value of the signin changes. Its challenging to get the history when using browser router.
-    <Router history={history}>
-      <StylesProvider generateClassName={generateClassName}>
-        <div>
-          <Header isSignedIn={isSignedIn} onSignOut={() => setIsSignedIn(false)} />
+    <Header isSignedIn={isSignedIn} onSignIn={handleSignIn} onSignOut={handleSignOut} />
+  );
+}
+
+function LocationDisplay() {
+  const location = useLocation();
+  console.log("container: appjs: Current path:", location.pathname); // This will log the path to console on every update
+  return null; // This component doesn't render anything
+}
+
+export default function App() {
+  return (
+    <Router>
+      <ThemeProvider theme={theme}>
+        <CacheProvider value={muiCache}>
+          <LocationDisplay />
+          <SignInOutController />
           <Suspense fallback={<Progress />}>
-            <Switch>
-              {/* /auth route */}
-              <Route path="/auth"><AuthLazy onSignIn={() => setIsSignedIn(true)} /></Route>
-              <Route path="/dashboard">{!isSignedIn && <Redirect to="/" />}<DashboardLazy /></Route>
-              {/* rest of the route */}
-              <Route path="/" component={MarketingLazy} />
-            </Switch>
+            <Routes>
+              <Route path="/auth/*" element={<AuthLazy />} />
+              <Route path="/dashboard" element={<DashboardLazy />} />
+              <Route path="/" element={<MarketingLazy />} />
+            </Routes>
           </Suspense>
-        </div>
-      </StylesProvider>
+        </CacheProvider>
+      </ThemeProvider>
     </Router>
   );
-};
+}

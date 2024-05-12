@@ -1,21 +1,18 @@
 import React from 'react';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
-import  LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme) => {
-    return createStyles({
-        bar:{
-            width:'100',
-            '& > * + *':{
-                marginTop:theme.spacing(2)
-            }
-        }
-    })
-})
+const StyledBar = styled('div')(({ theme }) => ({
+    width: '100%',
+    '& > * + *': {
+        marginTop: theme.spacing(2),
+    }
+}));
 
-export default () => {
-    const classes = useStyles();
-    return(
-        <div className={classes.bar}><LinearProgress/></div>
-    )
+export default function ProgressBar() {
+    return (
+        <StyledBar>
+            <LinearProgress />
+        </StyledBar>
+    );
 }
