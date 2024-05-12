@@ -17,6 +17,8 @@ const AuthLazy = lazy(() => import("./Components/AuthApp"));
 const MarketingLazy = lazy(() => import("./Components/MarketingApp"));
 const DashboardLazy = lazy(() => import("./Components/DashboardApp"));
 
+import { StoreProvider} from "store/StoreApp";
+
 const theme = createTheme();
 const muiCache = createCache({ key: "co", prepend: true });
 
@@ -49,6 +51,7 @@ function LocationDisplay() {
 
 export default function App() {
   return (
+    <StoreProvider>
     <Router>
       <ThemeProvider theme={theme}>
         <CacheProvider value={muiCache}>
@@ -64,5 +67,6 @@ export default function App() {
         </CacheProvider>
       </ThemeProvider>
     </Router>
+    </StoreProvider>
   );
 }

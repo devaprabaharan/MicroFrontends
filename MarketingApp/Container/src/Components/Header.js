@@ -5,10 +5,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box'; // Used for global styles
+import { useStore } from 'store/StoreApp';
 
 export default function Header({ isSignedIn, onSignIn, onSignOut }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const {count, increment, clear} = useStore();
 
   const handleLoginLogout = () => {
     if (isSignedIn) {
@@ -55,6 +57,22 @@ export default function Header({ isSignedIn, onSignIn, onSignOut }) {
             >
               App
             </Typography>
+            <Button
+              color="primary"
+              variant="outlined"
+              sx={{ my: 1, mx: 1.5 }}
+              onClick={increment}
+            >
+              Counter: {count}
+            </Button>
+            <Button
+              color="primary"
+              variant="outlined"
+              sx={{ my: 1, mx: 1.5 }}
+              onClick={clear}
+            >
+             ClearCount
+            </Button>
             <Button
               color="primary"
               variant="outlined"

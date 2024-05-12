@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
+import { useStore } from 'store/StoreApp';
 
 function Copyright() {
   return (
@@ -26,6 +27,7 @@ function Copyright() {
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function Album() {
+  const {count, increment, clear} = useStore();
   return (
     <React.Fragment>
       <main>
@@ -60,11 +62,13 @@ export default function Album() {
                   <Button component={RouterLink} to="/pricing" variant="contained" color="primary">
                     Pricing
                   </Button>
+                  <Button color="primary" variant="outlined" sx={{ my: 1, mx: 1.5 }} onClick={increment} >Counter: {count} </Button>
                 </Grid>
                 <Grid item>
                   <Button component={RouterLink} to="/pricing" variant="outlined" color="primary">
                     Pricing
                   </Button>
+                  <Button color="primary" variant="outlined" sx={{ my: 1, mx: 1.5 }} onClick={clear} >ClearCount</Button>
                 </Grid>
               </Grid>
             </div>
