@@ -22,6 +22,9 @@ const devConfig = {
             exposes:{
                 './MarketingApp':'./src/bootstrap'
             },
+            remotes:{
+                store: 'store@http://localhost:8084/remoteEntry.js'
+            },
             shared:packageJson.dependencies
         }),
     ]
