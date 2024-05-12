@@ -17,7 +17,7 @@ const prodConfig = {
                 './MarketingApp': './src/bootstrap'
             },
             remotes: {
-              store: `store@${domain}/store/latest/remoteEntry.js`
+              store: `marketing@${domain}/marketing/latest/remoteEntry.js`
             },
             shared: packageJson.dependencies
         })
