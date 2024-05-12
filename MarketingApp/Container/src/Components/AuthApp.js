@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react';
-import { mount } from 'marketing/MarketingApp';
+import { mount } from 'auth/AuthApp';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-export default function MarketingApp({ onSignIn }) {
+export default function AuthApp({ onSignIn }) {
     const ref = useRef(null);
     const navigate = useNavigate();
     const location = useLocation();
@@ -10,8 +10,7 @@ export default function MarketingApp({ onSignIn }) {
 
     useEffect(() => {
         const { onParentNavigate } = mount(ref.current, {
-            initialPath: location.pathname, // Send the initial state of the route to the subapp memory history
-
+            initialPath: location.pathname,
             onNavigate: ({ pathname: nextPathname }) => {
                 if (location.pathname !== nextPathname) {
                     navigationInitiatedByMicrofrontend.current = true;
@@ -27,12 +26,12 @@ export default function MarketingApp({ onSignIn }) {
             navigationInitiatedByMicrofrontend.current = false;
         } else {
             // Sync the microfrontend with the container's location
-            console.log(`container: MarketingApp - before sending the navigation of container to marketing:${location.pathname}`)
+            console.log(`container: Authapp - before sending the navigation of container to auth:${location.pathname}`)
             onParentNavigate({ pathname: location.pathname });
         }
 
         return () => {
-            // Cleanup logic if necessary when the component unmounts
+            // Clean up logic if necessary
         };
     }, [navigate, location, onSignIn]);
 
