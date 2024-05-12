@@ -1,4 +1,4 @@
-name: deploy-marketing
+name: deploy-store
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 defaults:
   run:
-    working-directory: MarketingApp/marketing
+    working-directory: StoreApp/store
 
 jobs:
   build:
@@ -29,6 +29,6 @@ jobs:
           aws-region: 'us-east-2'
 
       - name: Execute AWS CLI Command
-        run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/marketing/latest
+        run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/store/latest
 
-      - run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/marketing/latest/remoteEntry.js"
+      - run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/store/latest/remoteEntry.js"
