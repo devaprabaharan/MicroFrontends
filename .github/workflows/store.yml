@@ -10,7 +10,7 @@ on:
 
 defaults:
   run:
-    working-directory: StoreApp/store
+    working-directory: MarketingApp/store
 
 jobs:
   build:
