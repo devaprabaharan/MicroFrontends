@@ -26,6 +26,9 @@ const devConfig = {
             exposes:{
                 './DashboardApp':'./src/bootstrap'   // different for different apps
             },
+            remotes:{
+                store: 'store@http://localhost:8084/remoteEntry.js'
+            },
             shared:packageJson.dependencies
         }),
     ]
