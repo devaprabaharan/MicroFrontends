@@ -7,7 +7,6 @@ const mount =(el)=>{
 
     
     const root = ReactDOM.createRoot(el);
-    
     root.render(<App />);
   
 }
